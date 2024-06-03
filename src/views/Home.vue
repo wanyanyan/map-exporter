@@ -2,7 +2,7 @@
   <div class="full">
     <div id="before-container" class="full abs" @contextmenu.stop.prevent></div>
     <div class="meta abs">经度：{{ position.lng || '-' }}  纬度：{{ position.lat || '-' }}  级别：{{ position.zoom || '-' }}</div>
-    <Panel :position="position"/>
+    <Panel :position="position" @on-change="locationChange"/>
   </div>
 </template>
 
@@ -32,6 +32,13 @@ export default {
         lat: center.lat,
         zoom: this.map.getZoom()
       }
+    },
+    locationChange(params) {
+      let {lng, lat, zoom} = params
+      this.map.jumpTo({
+        center: [lng, lat],
+        zoom
+      })
     }
   },
   mounted () {

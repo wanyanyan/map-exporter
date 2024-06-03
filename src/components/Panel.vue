@@ -6,15 +6,15 @@
     <div class="create-content">
       <div class="flex-between padding">
         <div class="label">经度：</div>
-        <InputNumber v-model="params.lng" style="width:100%;"/>
+        <InputNumber v-model="params.lng" @on-blur="locationChange" :min="-180" :max="180" style="width:100%;"/>
       </div>
       <div class="flex-between padding">
         <div class="label">纬度：</div>
-        <InputNumber v-model="params.lat" style="width:100%;"/>
+        <InputNumber v-model="params.lat" @on-blur="locationChange" :min="-80" :max="80" style="width:100%;"/>
       </div>
       <div class="flex-between padding">
         <div class="label">级别：</div>
-        <InputNumber v-model="params.zoom" :max="19" :min="1" style="width:100%;"/>
+        <InputNumber v-model="params.zoom" :max="19" :min="1" @on-blur="locationChange" style="width:100%;"/>
       </div>
       <div class="flex-between padding">
         <div class="label">宽度：</div>
@@ -47,6 +47,9 @@ export default {
   },
   props: ['position'],
   methods: {
+    locationChange() {
+      this.$emit('on-change', this.params)
+    },
     download() {
       let loadingId = nanoid()
       this.uiStore.loadingStart(loadingId, 'blocking')
