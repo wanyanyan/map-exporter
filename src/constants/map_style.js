@@ -16,7 +16,7 @@ export default {
   "sources": {
     "google-ADKfomZJne": {
       "type": "raster",
-      "tiles": ["https://www.google.com/maps/vt?lyrs=s@189&gl=en&x={x}&y={y}&z={z}"],
+      "tiles": ["https://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}"],
       "tileSize": 256
     }
   },

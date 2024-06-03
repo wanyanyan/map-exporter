@@ -24,6 +24,10 @@
         <div class="label">高度：</div>
         <InputNumber v-model="params.height" style="width:100%;"/>
       </div>
+      <div class="flex-between padding">
+        <div class="label">包含标注：</div>
+        <Switch v-model="params.includeLabel" size="small"/>
+      </div>
     </div>
     <div class="action tc">
       <Button type="primary" long @click="download">下载</Button>
@@ -52,9 +56,11 @@ export default {
       div.style.position = 'absolute'
       div.style.zIndex = '-1'
       document.body.appendChild(div)
+      let style = JSON.parse(JSON.stringify(mapStyle))
+      style.sources['google-ADKfomZJne'].tiles = [`https://www.google.com/maps/vt?lyrs=${this.params.includeLabel?'y':'s'}@189&gl=en&x={x}&y={y}&z={z}`]
       const map = new mapboxgl.Map({
         container: div,
-        style: mapStyle,
+        style,
         bearing: 0,
         pitch: 0,
         center: [this.params.lng, this.params.lat],
@@ -90,8 +96,9 @@ export default {
         lng: 116.40,
         lat: 30.34,
         zoom: 18,
-        width: 4000,
-        height: 3000
+        width: 8000,
+        height: 6000,
+        includeLabel: false
       }
     }
   },

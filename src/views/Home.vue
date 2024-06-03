@@ -41,7 +41,7 @@ export default {
       bearing: 0,
       pitch: 0,
       center: [114.35825060, 30.5287076],
-      zoom: 15,
+      zoom: 16,
       doubleClickZoom: false,
       dragRotate: false,
       pitchWithRotate: false,
@@ -75,6 +75,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+#before-container{
+  background-color: #000000;
+}
 .meta{
   width: 100%;
   padding-left: 10px;
@@ -82,6 +85,7 @@ export default {
   line-height: 24px;
   bottom: 0;
   font-size: 12px;
+  color: #ffffff;
 }
 .actions{
   right: 20px;
