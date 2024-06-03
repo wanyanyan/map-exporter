@@ -1,0 +1,40 @@
+stages:
+  - build
+  - deploy
+
+test:
+  stage: build
+  image: node:16-slim
+  cache:
+    key: '$CI_COMMIT_REF_SLUG'
+    paths:
+      - node_modules
+  before_script:
+    - yarn
+  script:
+    - yarn build
+  artifacts:
+    paths:
+      - dist
+  only:
+    - main
+
+deploy:
+  stage: deploy
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - 'which rsync || ( apt-get update -y && apt-get install rsync -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan thope.tianhengyun.com >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - rsync -avzP --delete -e ssh ./dist/ admin@thope.tianhengyun.com:~/projects/nginx/data/html/thcloud
+  environment:
+    name: production
+    url: http://thope.tianhengyun.com/thcloud
+  only:
+    - main
